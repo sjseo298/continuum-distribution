@@ -75,10 +75,10 @@ if ! command -v "$EDITOR_CMD" >/dev/null 2>&1; then
   exit 1
 fi
 
-API_URL="https://api.github.com/repos/${DISTRO_REPO}/releases/latest"
+API_URL="https://api.github.com/repos/${DISTRO_REPO}/releases?per_page=30"
 RELEASE_JSON="$TMP_DIR/release.json"
 
-echo "Fetching latest release from ${DISTRO_REPO}..."
+echo "Fetching latest release list from ${DISTRO_REPO}..."
 wget -qO "$RELEASE_JSON" "$API_URL"
 
 VSIX_URL="$({
@@ -87,13 +87,15 @@ import json
 import sys
 
 with open(sys.argv[1], 'r', encoding='utf-8') as fh:
-    release = json.load(fh)
+  releases = json.load(fh)
 
-for asset in release.get('assets', []):
+for release in releases:
+  assets = release.get('assets', [])
+  for asset in assets:
     name = asset.get('name', '')
     if name.endswith('.vsix'):
-        print(asset['browser_download_url'])
-        break
+      print(asset['browser_download_url'])
+      raise SystemExit(0)
 PY
 } || true)"
 

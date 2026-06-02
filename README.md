@@ -6,7 +6,15 @@ This repository only hosts prebuilt VSIX binaries and installation helpers.
 
 ## Install The Latest Release
 
-Run the installer directly:
+Safer approach (recommended):
+
+```bash
+wget -O install-continuum.sh https://raw.githubusercontent.com/sjseo298/continuum-distribution/main/install-continuum.sh
+chmod +x install-continuum.sh
+./install-continuum.sh
+```
+
+One-liner (faster, less safe):
 
 ```bash
 bash <(wget -qO- https://raw.githubusercontent.com/sjseo298/continuum-distribution/main/install-continuum.sh)
@@ -42,5 +50,5 @@ Replace `code` with your editor command if needed.
 
 ## Notes
 
-- The installer uses `wget` and the GitHub Releases API to fetch the latest VSIX.
+- The installer uses `wget` and the GitHub Releases API (`/releases`) to fetch the latest VSIX, including pre-releases.
 - Only the 3 latest distribution releases are retained.
